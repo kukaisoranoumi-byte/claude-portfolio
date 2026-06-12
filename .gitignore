@@ -1,0 +1,13 @@
+# macOS resource forks
+._*
+.DS_Store
+
+# Design system files (local only)
+*.yaml
+*.yml
+
+# Claude Code local config
+.claude/
+
+# Backup
+index_backup.html
