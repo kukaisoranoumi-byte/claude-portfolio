@@ -8,7 +8,6 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      /* Colors */
       --blue:        #0071e3;
       --blue-bright: #2997ff;
       --black:       #000000;
@@ -21,11 +20,7 @@
       --text-light-secondary:#6e6e73;
       --border-dark:  rgba(255,255,255,0.12);
       --border-light: rgba(0,0,0,0.08);
-
-      /* Type */
       --font: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-
-      /* Easing */
       --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
@@ -44,7 +39,11 @@
       height: 44px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 24px;
-      background: rgba(0,0,0,0.72);
+      background: transparent;
+      transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+    }
+    nav.scrolled {
+      background: rgba(0, 0, 0, 0.72);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-dark);
@@ -66,11 +65,22 @@
 
     /* ── SCROLL REVEAL ── */
     .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
+    /* Hero内のrevealは常に表示 */
+    .hero .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
 
-    /* ── HERO (DARK) ── */
+    /* ── HERO (BLACK) ── */
     .hero {
       min-height: 100vh;
       background: var(--black);
@@ -185,7 +195,7 @@
       display: flex; flex-direction: column;
       transition: background 0.3s var(--ease);
     }
-    .work-card:hover { background: #1a1a1a; }
+    .work-card:hover { background: #1e1e1e; }
     .work-card.wide { grid-column: span 2; }
     .work-card.light-card {
       background: var(--white);
@@ -303,7 +313,7 @@
       line-height: 1.5;
     }
 
-    /* ── CONTACT (DARK) ── */
+    /* ── CONTACT (BLACK) ── */
     .contact-inner {
       text-align: center;
       padding: 120px 40px;
@@ -322,12 +332,44 @@
       letter-spacing: 0.01em;
     }
     footer span { color: var(--blue-bright); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .works-grid {
+        grid-template-columns: 1fr;
+      }
+      .work-card.wide {
+        grid-column: span 1;
+      }
+      .work-screenshot-row {
+        grid-template-columns: 1fr;
+      }
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding: 120px 24px 80px;
+      }
+      .inner {
+        padding: 0 24px;
+      }
+      .work-card {
+        padding: 36px 24px 32px;
+        min-height: auto;
+      }
+      .nav-links {
+        gap: 16px;
+      }
+      .contact-inner {
+        padding: 80px 24px;
+      }
+    }
   </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="main-nav">
   <div class="nav-logo">✳</div>
   <ul class="nav-links">
     <li><a href="#works">実績</a></li>
@@ -347,7 +389,7 @@
   </div>
 </section>
 
-<!-- WORKS (DARK GRID) -->
+<!-- WORKS (BLACK GRID) -->
 <div id="works" class="section-black">
   <div class="inner">
     <p class="section-eyebrow reveal">Works</p>
@@ -524,11 +566,36 @@
 </div>
 
 <footer>
-  <p>© 2026 Claude Code Portfolio &nbsp;—&nbsp; Made with <span>✳</span> Claude Code</p>
+  <p>© 2026 &nbsp;<span>✳</span>&nbsp; Claude Code Portfolio &nbsp;—&nbsp; Made with Claude Code</p>
 </footer>
 
 <script>
-  // No scroll reveal — all content visible immediately
+  // ── NAV: スクロール連動でblur背景を付与 ──
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }, { passive: true });
+
+  // ── SCROLL REVEAL: ヒーロー外の .reveal 要素のみ対象 ──
+  const revealEls = document.querySelectorAll('.reveal:not(.hero .reveal)');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealEls.forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
