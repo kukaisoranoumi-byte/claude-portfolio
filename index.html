@@ -85,41 +85,32 @@
       transition: none;
     }
 
-    /* ── HERO (BLACK + hero.png split layout) ── */
+    /* ── HERO (background image) ── */
     .hero {
+      position: relative;
       min-height: 100vh;
-      background: var(--black);
+      background-image: url('image/hero.png');
+      background-size: cover;
+      background-position: center;
       display: flex;
-      align-items: center;
-      padding: 100px 40px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-      gap: 40px;
-    }
-    /* hero をフル幅に見せるためのラッパー */
-    .hero-section {
-      background: var(--black);
-      width: 100%;
-    }
-    .hero-text {
-      flex: 1 1 50%;
-      text-align: left;
-    }
-    .hero-image {
-      flex: 1 1 45%;
-      display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 160px 40px 100px;
     }
-    .hero-image img {
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-section {
       width: 100%;
-      max-width: 480px;
-      height: auto;
-      display: block;
-      border-radius: 24px;
-      /* 白背景イラストを暗背景に馴染ませる */
-      mix-blend-mode: lighten;
-      filter: brightness(0.92);
     }
     .eyebrow {
       font-size: 14px; font-weight: 600;
@@ -148,6 +139,12 @@
       line-height: 1.6; max-width: 520px;
       margin: 0 auto 40px;
     }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
     .btn-primary {
       display: inline-block;
       padding: 8px 20px;
@@ -168,7 +165,7 @@
       border-radius: 980px;
       font-size: 17px; font-weight: 400;
       text-decoration: none;
-      margin-left: 12px;
+
       transition: background 0.2s var(--ease);
     }
     .btn-ghost:hover { background: rgba(255,255,255,0.08); }
@@ -380,12 +377,8 @@
         grid-template-columns: 1fr;
       }
       .hero {
-        flex-direction: column;
-        padding: 120px 24px 60px;
-        text-align: center;
+        padding: 120px 24px 80px;
       }
-      .hero-text { text-align: center; }
-      .hero-image { width: 100%; max-width: 320px; margin: 0 auto; }
       .inner {
         padding: 0 24px;
       }
@@ -414,23 +407,19 @@
   </ul>
 </nav>
 
-<!-- HERO (BLACK + hero.png 2-column layout) -->
-<div class="hero-section">
-  <section class="hero">
-    <div class="hero-text">
-      <p class="eyebrow">Claude Code × AI 開発</p>
-      <h1 class="hero-title">AI と共に<br><em>作り上げた</em></h1>
-      <p class="hero-sub">Claude Code を使ったスキル開発・自動化・<br>コードレビューの成果をまとめたポートフォリオです。</p>
-      <div>
-        <a href="#works" class="btn-primary">実績を見る</a>
-        <a href="#contact" class="btn-ghost">連絡する</a>
-      </div>
+<!-- HERO (background image) -->
+<section class="hero" id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="eyebrow">Claude Code × AI 開発</p>
+    <h1 class="hero-title">AI と共に<br><em>作り上げた</em></h1>
+    <p class="hero-sub">Claude Code を使ったスキル開発・自動化・<br>コードレビューの成果をまとめたポートフォリオです。</p>
+    <div class="hero-cta">
+      <a href="#works" class="btn-primary">実績を見る</a>
+      <a href="#contact" class="btn-ghost">連絡する</a>
     </div>
-    <div class="hero-image">
-      <img src="image/hero.png" alt="AI開発イメージ" />
-    </div>
-  </section>
-</div>
+  </div>
+</section>
 
 <!-- WORKS (BLACK GRID) -->
 <div id="works" class="section-black">
