@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary:      #e8a4b8;
+      --primary-dark: #d48fa3;
+      --accent-soft:  #fff0f3;
+      --bg:           #ffffff;
+      --bg-2:         #fafafa;
+      --bg-3:         #f5f5f5;
+      --bg-warm:      #faf9f5;
+      --text:         #333333;
+      --muted:        #888888;
+      --border:       #eeeeee;
+      --border-soft:  #f5f5f5;
+      --radius-card:  8px;
+      --radius-pill:  50px;
+      --shadow-sm:    rgba(0,0,0,0.08) 0 2px 8px;
+      --shadow-md:    rgba(0,0,0,0.10) 0 30px 80px;
+      --shadow-accent:rgba(232,164,184,0.4) 0 10px 30px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+      line-height: 1.8;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 48px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .nav-logo {
+      font-size: 15px; font-weight: 400;
+      letter-spacing: 0.15em; color: var(--text);
+    }
+    .nav-logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--text); text-decoration: none; font-size: 14px;
+      letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 88vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      padding: 100px 24px 80px;
+      background: var(--bg-warm);
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 20px;
+      background: var(--accent-soft);
+      color: var(--primary);
+      border-radius: var(--radius-pill);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em;
+      margin-bottom: 36px;
+    }
+    .divider {
+      width: 48px; height: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+      margin: 0 auto 32px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      line-height: 1.8;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--primary);
+    }
+    .hero p {
+      font-size: 15px; color: var(--muted);
+      max-width: 480px; margin: 0 auto 48px;
+      line-height: 1.9; letter-spacing: 0.03em;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 12px 36px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      letter-spacing: 0.06em;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      box-shadow: var(--shadow-accent);
+    }
+
+    /* ── SECTION ── */
+    section {
+      padding: 80px 48px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .section-header { text-align: center; margin-bottom: 56px; }
+    .section-label {
+      font-size: 11px; letter-spacing: 0.1em;
+      color: var(--primary); text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 24px; font-weight: 700;
+      letter-spacing: 0.05em; color: var(--text);
+      margin-bottom: 16px;
+    }
+    .section-divider {
+      width: 48px; height: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+      margin: 0 auto;
+    }
+
+    /* ── BENTO GRID ── */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-sm);
+    }
+    .card.wide { grid-column: span 2; }
+    .card.tall { grid-row: span 2; }
+
+    .card-level {
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+    .level-beginner { background: #e8f5e9; color: #4caf50; }
+    .level-mid      { background: #ede7f6; color: #7c4dff; }
+    .level-advanced { background: var(--accent-soft); color: var(--primary); }
+
+    .card-title {
+      font-size: 17px; font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 10px; color: var(--text);
+    }
+    .card-desc {
+      font-size: 14px; color: var(--muted);
+      line-height: 1.8; margin-bottom: 20px;
+    }
+
+    .screenshot {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--bg-3);
+    }
+    .screenshot img { width: 100%; height: auto; display: block; }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .tag {
+      padding: 4px 14px;
+      background: var(--accent-soft);
+      color: var(--primary);
+      border-radius: var(--radius-pill);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── SKILLS ── */
+    .skills-bg { background: var(--bg-warm); }
+    .skills-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 80px 48px;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .skill-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 20px 22px;
+      display: flex; align-items: center; gap: 14px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .skill-item:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .skill-icon {
+      width: 36px; height: 36px;
+      background: var(--accent-soft);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .skill-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .skill-sub  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── CONTACT ── */
+    .contact-box {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 64px;
+      text-align: center;
+    }
+    .contact-box h2 {
+      font-size: 28px; font-weight: 400;
+      letter-spacing: 0.12em; margin-bottom: 16px;
+    }
+    .contact-box p { color: var(--muted); margin-bottom: 36px; font-size: 14px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      text-align: center;
+      color: var(--muted); font-size: 13px;
+      letter-spacing: 0.05em;
+      background: var(--bg);
+    }
+    footer span { color: var(--primary); }
+
+    /* code-block style for screenshots */
+    .code-window {
+      background: var(--bg-warm);
+      border: 1px solid rgba(31,30,29,0.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .code-window-dots {
+      display: flex; gap: 6px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-3);
+    }
+    .code-window-dots span {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dot-r { background: #ffb5b5; }
+    .dot-y { background: #ffe5a0; }
+    .dot-g { background: #b5e8b5; }
+    .code-window img { width: 100%; display: block; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>✳</span> Claude Code Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#works">実績</a></li>
+    <li><a href="#skills">スキル</a></li>
+    <li><a href="#contact">連絡先</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Claude Code × AI 開発</div>
+  <div class="divider"></div>
+  <h1>AI と共に<br><em>作り上げた</em><br>開発実績</h1>
+  <p>Claude Code を使ったスキル開発・自動化・コードレビューの<br>成果をまとめたポートフォリオです。</p>
+  <a href="#works" class="btn-primary">実績を見る</a>
+</div>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="section-header">
+    <p class="section-label">Works</p>
+    <h2 class="section-title">開発実績</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="bento">
+
+    <!-- 初級 -->
+    <div class="card">
+      <span class="card-level level-beginner">初級</span>
+      <h3 class="card-title">文字数カウントスキルの活用</h3>
+      <p class="card-desc">/char-count スキルを使い、複数パターンの文字数を自動集計。スペース・改行の有無で4種類の結果を出力。</p>
+      <div class="code-window">
+        <div class="code-window-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/初級のコピー.png" alt="初級 - 文字数カウントスキル" />
+      </div>
+      <div class="tag-list">
+        <span class="tag">/char-count</span>
+        <span class="tag">Skill実行</span>
+        <span class="tag">Python</span>
+      </div>
+    </div>
+
+    <!-- 中級① セッション -->
+    <div class="card">
+      <span class="card-level level-mid">中級</span>
+      <h3 class="card-title">セッション管理と自己紹介ファイル作成</h3>
+      <p class="card-desc">Claude Code のセッションを整理し、README.md として自己紹介ファイルを自動生成。</p>
+      <div class="code-window">
+        <div class="code-window-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/ステップ5_セッション並替のコピー.png" alt="中級 - セッション管理" />
+      </div>
+      <div class="tag-list">
+        <span class="tag">セッション管理</span>
+        <span class="tag">README 生成</span>
+      </div>
+    </div>
+
+    <!-- 中級② スキル作成 wide -->
+    <div class="card wide">
+      <span class="card-level level-mid">中級</span>
+      <h3 class="card-title">カスタムスキル「mojisuu」の作成・リネーム</h3>
+      <p class="card-desc">char-count スキルをゼロから作成し、スキル名を mojisuu に変更。フォルダ名と SKILL.md の name フィールドを同時更新し、スキルリストへ即座に反映させた。</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="code-window">
+          <div class="code-window-dots">
+            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <img src="../image/中級Claude Code画面のコピー.png" alt="中級 - Claude Code画面" />
+        </div>
+        <div class="code-window">
+          <div class="code-window-dots">
+            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <img src="../image/中級フォルダ内のコピー.png" alt="中級 - フォルダ構成" />
+        </div>
+      </div>
+      <div class="tag-list">
+        <span class="tag">カスタムスキル</span>
+        <span class="tag">mojisuu</span>
+        <span class="tag">SKILL.md</span>
+      </div>
+    </div>
+
+    <!-- 上級① ブログデザイナー tall -->
+    <div class="card tall">
+      <span class="card-level level-advanced">上級</span>
+      <h3 class="card-title">ブログ構成生成スキル /blog-designer</h3>
+      <p class="card-desc">テンプレートを読み込み、指定テーマでブログ記事を自動生成。文字数カウントまで一気通貫で処理するスキルを開発。</p>
+      <div class="code-window" style="margin-bottom:14px;">
+        <div class="code-window-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/上級Skill動作1のコピー.png" alt="上級 - blog-designer 1" />
+      </div>
+      <div class="code-window">
+        <div class="code-window-dots">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/上級Skill動作2のコピー.png" alt="上級 - blog-designer 2" />
+      </div>
+      <div class="tag-list">
+        <span class="tag">/blog-designer</span>
+        <span class="tag">テンプレート活用</span>
+        <span class="tag">文字数検証</span>
+      </div>
+    </div>
+
+    <!-- 上級② コードレビュー wide -->
+    <div class="card wide">
+      <span class="card-level level-advanced">上級</span>
+      <h3 class="card-title">セキュリティレビュースキル /code-reviewer</h3>
+      <p class="card-desc">SubAgent を用いた自動コードレビュースキルを開発。SQL インジェクションや MD5 ハッシュ等の脆弱性を検出し、7件の修正を自動適用。</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="code-window">
+          <div class="code-window-dots">
+            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <img src="../image/code-reviewerのコピー.png" alt="上級 - code-reviewer レビュー結果" />
+        </div>
+        <div class="code-window">
+          <div class="code-window-dots">
+            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <img src="../image/code-reviewer修正後のコピー.png" alt="上級 - code-reviewer 修正後" />
+        </div>
+      </div>
+      <div class="tag-list">
+        <span class="tag">/code-reviewer</span>
+        <span class="tag">SubAgent</span>
+        <span class="tag">セキュリティ</span>
+        <span class="tag">自動修正</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div class="skills-bg">
+  <div class="skills-inner">
+    <div class="section-header">
+      <p class="section-label">Skills</p>
+      <h2 class="section-title">使用技術・ツール</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <div class="skill-icon">✳</div>
+        <div>
+          <div class="skill-name">Claude Code</div>
+          <div class="skill-sub">CLI / エージェント開発</div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">⚡</div>
+        <div>
+          <div class="skill-name">カスタムスキル</div>
+          <div class="skill-sub">SKILL.md 設計・実装</div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">🔍</div>
+        <div>
+          <div class="skill-name">SubAgent</div>
+          <div class="skill-sub">マルチエージェント構成</div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">🛡</div>
+        <div>
+          <div class="skill-name">セキュリティレビュー</div>
+          <div class="skill-sub">脆弱性検出・自動修正</div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">🐍</div>
+        <div>
+          <div class="skill-name">Python</div>
+          <div class="skill-sub">スクリプト・自動化</div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">📝</div>
+        <div>
+          <div class="skill-name">Markdown</div>
+          <div class="skill-sub">ドキュメント設計</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-box">
+    <h2>お問い合わせ</h2>
+    <p>AI 開発・Claude Code スキル構築に関するご相談はお気軽にどうぞ。</p>
+    <a href="mailto:alphardrenjyar@gmail.com" class="btn-primary">メールを送る</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Claude Code Portfolio &nbsp;—&nbsp; Made with <span>✳</span> Claude Code</p>
+</footer>
+
+</body>
+</html>
