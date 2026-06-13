@@ -85,27 +85,41 @@
       transition: none;
     }
 
-    /* ── HERO (BLACK + hero.png) ── */
+    /* ── HERO (BLACK + hero.png split layout) ── */
     .hero {
       min-height: 100vh;
-      position: relative;
       background: var(--black);
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      text-align: center;
-      padding: 160px 40px 100px;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 100px 40px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 40px;
     }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: url('image/hero.png') center center / cover no-repeat;
-      opacity: 0.32;
-      z-index: 0;
+    /* hero をフル幅に見せるためのラッパー */
+    .hero-section {
+      background: var(--black);
+      width: 100%;
     }
-    .hero > * {
-      position: relative;
-      z-index: 1;
+    .hero-text {
+      flex: 1 1 50%;
+      text-align: left;
+    }
+    .hero-image {
+      flex: 1 1 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-image img {
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+      display: block;
+      border-radius: 24px;
+      /* 白背景イラストを暗背景に馴染ませる */
+      mix-blend-mode: lighten;
+      filter: brightness(0.92);
     }
     .eyebrow {
       font-size: 14px; font-weight: 600;
@@ -366,8 +380,12 @@
         grid-template-columns: 1fr;
       }
       .hero {
-        padding: 120px 24px 80px;
+        flex-direction: column;
+        padding: 120px 24px 60px;
+        text-align: center;
       }
+      .hero-text { text-align: center; }
+      .hero-image { width: 100%; max-width: 320px; margin: 0 auto; }
       .inner {
         padding: 0 24px;
       }
@@ -396,17 +414,23 @@
   </ul>
 </nav>
 
-<!-- HERO (BLACK + hero.png background) -->
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <p class="eyebrow reveal">Claude Code × AI 開発</p>
-  <h1 class="hero-title reveal">AI と共に<br><em>作り上げた</em></h1>
-  <p class="hero-sub reveal">Claude Code を使ったスキル開発・自動化・<br>コードレビューの成果をまとめたポートフォリオです。</p>
-  <div class="reveal">
-    <a href="#works" class="btn-primary">実績を見る</a>
-    <a href="#contact" class="btn-ghost">連絡する</a>
-  </div>
-</section>
+<!-- HERO (BLACK + hero.png 2-column layout) -->
+<div class="hero-section">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Claude Code × AI 開発</p>
+      <h1 class="hero-title">AI と共に<br><em>作り上げた</em></h1>
+      <p class="hero-sub">Claude Code を使ったスキル開発・自動化・<br>コードレビューの成果をまとめたポートフォリオです。</p>
+      <div>
+        <a href="#works" class="btn-primary">実績を見る</a>
+        <a href="#contact" class="btn-ghost">連絡する</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="image/hero.png" alt="AI開発イメージ" />
+    </div>
+  </section>
+</div>
 
 <!-- WORKS (BLACK GRID) -->
 <div id="works" class="section-black">
