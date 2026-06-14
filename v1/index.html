@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Claude Code Portfolio</title>
+  <title>Claude Code Portfolio — Warm Elegant</title>
+  <!-- [FIX 🔴] description 追加 -->
+  <meta name="description" content="Claude Code を活用したAI開発のポートフォリオ。カスタムスキル、SubAgent、セキュリティレビュー自動化など初級から上級までの実績。" />
+  <!-- [FIX 🔴] OGP タグを全追加 -->
+  <meta property="og:title" content="Claude Code Portfolio" />
+  <meta property="og:description" content="Claude Code を活用したAI開発ポートフォリオ" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kukaisoranoumi-byte.github.io/claude-portfolio/v1/" />
+  <meta property="og:image" content="https://kukaisoranoumi-byte.github.io/claude-portfolio/image/hero.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -43,20 +51,29 @@
       background: var(--bg);
       border-bottom: 1px solid var(--border-soft);
     }
+    /* [FIX 🔴] ロゴを <a> に変更 */
     .nav-logo {
       font-size: 15px; font-weight: 400;
       letter-spacing: 0.15em; color: var(--text);
+      text-decoration: none;
+      transition: opacity 0.2s;
     }
+    .nav-logo:hover { opacity: 0.7; }
     .nav-logo span { color: var(--primary); }
     .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
       color: var(--text); text-decoration: none; font-size: 14px;
       letter-spacing: 0.05em;
       transition: color 0.3s;
+      border-radius: 3px;
+      outline-offset: 3px;
     }
     .nav-links a:hover { color: var(--primary); }
+    /* [FIX 🟡] キーボードフォーカス可視性 */
+    .nav-links a:focus-visible { outline: 2px solid var(--primary); }
 
     /* ── HERO ── */
+    /* [FIX 🟡] div.hero → section 化は HTML 側で対応 */
     .hero {
       min-height: 88vh;
       display: flex; flex-direction: column;
@@ -89,7 +106,8 @@
       margin-bottom: 24px;
       color: var(--text);
     }
-    .hero h1 em {
+    /* [FIX 🔴] <em> の代わりに .accent-text クラスで色付け */
+    .hero h1 .accent-text {
       font-style: normal;
       color: var(--primary);
     }
@@ -115,7 +133,7 @@
     }
 
     /* ── SECTION ── */
-    section {
+    .section-inner {
       padding: 80px 48px;
       max-width: 1200px; margin: 0 auto;
     }
@@ -257,7 +275,7 @@
     }
     footer span { color: var(--primary); }
 
-    /* code-block style for screenshots */
+    /* code-block style */
     .code-window {
       background: var(--bg-warm);
       border: 1px solid rgba(31,30,29,0.12);
@@ -277,13 +295,35 @@
     .dot-y { background: #ffe5a0; }
     .dot-g { background: #b5e8b5; }
     .code-window img { width: 100%; display: block; }
+
+    /* [FIX 🟡] インラインで書かれていたグリッドスタイルをクラスに */
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .mb-14 { margin-bottom: 14px; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .section-inner { padding: 60px 24px; }
+      .skills-inner  { padding: 60px 24px; }
+      .bento { grid-template-columns: 1fr; }
+      .card.wide { grid-column: span 1; }
+      .card.tall { grid-row: span 1; }
+      .two-col-grid { grid-template-columns: 1fr; }
+      .contact-box { padding: 40px 24px; }
+      footer { padding: 24px; }
+    }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo"><span>✳</span> Claude Code Portfolio</div>
+<!-- [FIX 🔴] aria-label を追加 -->
+<nav aria-label="メインナビゲーション">
+  <!-- [FIX 🔴] div → <a> に変更 -->
+  <a href="#hero" class="nav-logo" aria-label="トップへ戻る"><span aria-hidden="true">✳</span> Claude Code Portfolio</a>
   <ul class="nav-links">
     <li><a href="#works">実績</a></li>
     <li><a href="#skills">スキル</a></li>
@@ -291,186 +331,200 @@
   </ul>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
+<!-- [FIX 🔴] <main> ランドマーク追加 -->
+<main>
+
+<!-- [FIX 🟡] div.hero → section に変更 -->
+<section class="hero" id="hero" aria-label="ヒーロー">
   <div class="hero-badge">Claude Code × AI 開発</div>
-  <div class="divider"></div>
-  <h1>AI と共に<br><em>作り上げた</em><br>開発実績</h1>
+  <!-- [FIX 🟡] 装飾divに aria-hidden -->
+  <div class="divider" aria-hidden="true"></div>
+  <!-- [FIX 🔴] <em> → <span class="accent-text"> に変更 -->
+  <h1>AI と共に<br><span class="accent-text">作り上げた</span><br>開発実績</h1>
   <p>Claude Code を使ったスキル開発・自動化・コードレビューの<br>成果をまとめたポートフォリオです。</p>
   <a href="#works" class="btn-primary">実績を見る</a>
-</div>
+</section>
 
 <!-- WORKS -->
-<section id="works">
-  <div class="section-header">
-    <p class="section-label">Works</p>
-    <h2 class="section-title">開発実績</h2>
-    <div class="section-divider"></div>
-  </div>
-
-  <div class="bento">
-
-    <!-- 初級 -->
-    <div class="card">
-      <span class="card-level level-beginner">初級</span>
-      <h3 class="card-title">文字数カウントスキルの活用</h3>
-      <p class="card-desc">/char-count スキルを使い、複数パターンの文字数を自動集計。スペース・改行の有無で4種類の結果を出力。</p>
-      <div class="code-window">
-        <div class="code-window-dots">
-          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-        </div>
-        <img src="../image/初級のコピー.png" alt="初級 - 文字数カウントスキル" />
-      </div>
-      <div class="tag-list">
-        <span class="tag">/char-count</span>
-        <span class="tag">Skill実行</span>
-        <span class="tag">Python</span>
-      </div>
+<!-- [FIX 🟡] aria-labelledby を追加 -->
+<section id="works" aria-labelledby="works-title">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-label">Works</p>
+      <h2 class="section-title" id="works-title">開発実績</h2>
+      <div class="section-divider" aria-hidden="true"></div>
     </div>
 
-    <!-- 中級① セッション -->
-    <div class="card">
-      <span class="card-level level-mid">中級</span>
-      <h3 class="card-title">セッション管理と自己紹介ファイル作成</h3>
-      <p class="card-desc">Claude Code のセッションを整理し、README.md として自己紹介ファイルを自動生成。</p>
-      <div class="code-window">
-        <div class="code-window-dots">
-          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-        </div>
-        <img src="../image/ステップ5_セッション並替のコピー.png" alt="中級 - セッション管理" />
-      </div>
-      <div class="tag-list">
-        <span class="tag">セッション管理</span>
-        <span class="tag">README 生成</span>
-      </div>
-    </div>
+    <div class="bento">
 
-    <!-- 中級② スキル作成 wide -->
-    <div class="card wide">
-      <span class="card-level level-mid">中級</span>
-      <h3 class="card-title">カスタムスキル「mojisuu」の作成・リネーム</h3>
-      <p class="card-desc">char-count スキルをゼロから作成し、スキル名を mojisuu に変更。フォルダ名と SKILL.md の name フィールドを同時更新し、スキルリストへ即座に反映させた。</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <!-- 初級 -->
+      <article class="card">
+        <span class="card-level level-beginner">初級</span>
+        <h3 class="card-title">文字数カウントスキルの活用</h3>
+        <p class="card-desc">/char-count スキルを使い、複数パターンの文字数を自動集計。スペース・改行の有無で4種類の結果を出力。</p>
         <div class="code-window">
-          <div class="code-window-dots">
+          <!-- [FIX 🟡] 装飾ドットに aria-hidden -->
+          <div class="code-window-dots" aria-hidden="true">
             <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
           </div>
-          <img src="../image/中級Claude Code画面のコピー.png" alt="中級 - Claude Code画面" />
+          <!-- [FIX 🟢] loading="lazy" 追加 -->
+          <img src="../image/初級のコピー.png" alt="初級スキル：/char-count の実行結果画面" loading="lazy" />
         </div>
+        <div class="tag-list" aria-label="使用技術">
+          <span class="tag">/char-count</span>
+          <span class="tag">Skill実行</span>
+          <span class="tag">Python</span>
+        </div>
+      </article>
+
+      <!-- 中級① セッション -->
+      <article class="card">
+        <span class="card-level level-mid">中級</span>
+        <h3 class="card-title">セッション管理と自己紹介ファイル作成</h3>
+        <p class="card-desc">Claude Code のセッションを整理し、README.md として自己紹介ファイルを自動生成。</p>
         <div class="code-window">
-          <div class="code-window-dots">
+          <div class="code-window-dots" aria-hidden="true">
             <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
           </div>
-          <img src="../image/中級フォルダ内のコピー.png" alt="中級 - フォルダ構成" />
+          <img src="../image/ステップ5_セッション並替のコピー.png" alt="中級：セッション並び替えとREADME自動生成の画面" loading="lazy" />
         </div>
-      </div>
-      <div class="tag-list">
-        <span class="tag">カスタムスキル</span>
-        <span class="tag">mojisuu</span>
-        <span class="tag">SKILL.md</span>
-      </div>
-    </div>
+        <div class="tag-list" aria-label="使用技術">
+          <span class="tag">セッション管理</span>
+          <span class="tag">README 生成</span>
+        </div>
+      </article>
 
-    <!-- 上級① ブログデザイナー tall -->
-    <div class="card tall">
-      <span class="card-level level-advanced">上級</span>
-      <h3 class="card-title">ブログ構成生成スキル /blog-designer</h3>
-      <p class="card-desc">テンプレートを読み込み、指定テーマでブログ記事を自動生成。文字数カウントまで一気通貫で処理するスキルを開発。</p>
-      <div class="code-window" style="margin-bottom:14px;">
-        <div class="code-window-dots">
-          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+      <!-- 中級② スキル作成 wide -->
+      <article class="card wide">
+        <span class="card-level level-mid">中級</span>
+        <h3 class="card-title">カスタムスキル「mojisuu」の作成・リネーム</h3>
+        <p class="card-desc">char-count スキルをゼロから作成し、スキル名を mojisuu に変更。フォルダ名と SKILL.md の name フィールドを同時更新し、スキルリストへ即座に反映させた。</p>
+        <!-- [FIX 🟡] インラインスタイル → クラスに移行 -->
+        <div class="two-col-grid">
+          <div class="code-window">
+            <div class="code-window-dots" aria-hidden="true">
+              <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+            </div>
+            <img src="../image/中級Claude Code画面のコピー.png" alt="中級：Claude Code でのスキル作成画面" loading="lazy" />
+          </div>
+          <div class="code-window">
+            <div class="code-window-dots" aria-hidden="true">
+              <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+            </div>
+            <img src="../image/中級フォルダ内のコピー.png" alt="中級：mojisuu スキルのフォルダ構成" loading="lazy" />
+          </div>
         </div>
-        <img src="../image/上級Skill動作1のコピー.png" alt="上級 - blog-designer 1" />
-      </div>
-      <div class="code-window">
-        <div class="code-window-dots">
-          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        <div class="tag-list" aria-label="使用技術">
+          <span class="tag">カスタムスキル</span>
+          <span class="tag">mojisuu</span>
+          <span class="tag">SKILL.md</span>
         </div>
-        <img src="../image/上級Skill動作2のコピー.png" alt="上級 - blog-designer 2" />
-      </div>
-      <div class="tag-list">
-        <span class="tag">/blog-designer</span>
-        <span class="tag">テンプレート活用</span>
-        <span class="tag">文字数検証</span>
-      </div>
-    </div>
+      </article>
 
-    <!-- 上級② コードレビュー wide -->
-    <div class="card wide">
-      <span class="card-level level-advanced">上級</span>
-      <h3 class="card-title">セキュリティレビュースキル /code-reviewer</h3>
-      <p class="card-desc">SubAgent を用いた自動コードレビュースキルを開発。SQL インジェクションや MD5 ハッシュ等の脆弱性を検出し、7件の修正を自動適用。</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-        <div class="code-window">
-          <div class="code-window-dots">
+      <!-- 上級① ブログデザイナー tall -->
+      <article class="card tall">
+        <span class="card-level level-advanced">上級</span>
+        <h3 class="card-title">ブログ構成生成スキル /blog-designer</h3>
+        <p class="card-desc">テンプレートを読み込み、指定テーマでブログ記事を自動生成。文字数カウントまで一気通貫で処理するスキルを開発。</p>
+        <!-- [FIX 🟡] style="margin-bottom:14px;" → クラス .mb-14 に移行 -->
+        <div class="code-window mb-14">
+          <div class="code-window-dots" aria-hidden="true">
             <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
           </div>
-          <img src="../image/code-reviewerのコピー.png" alt="上級 - code-reviewer レビュー結果" />
+          <img src="../image/上級Skill動作1のコピー.png" alt="上級：/blog-designer スキル実行画面（1/2）" loading="lazy" />
         </div>
         <div class="code-window">
-          <div class="code-window-dots">
+          <div class="code-window-dots" aria-hidden="true">
             <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
           </div>
-          <img src="../image/code-reviewer修正後のコピー.png" alt="上級 - code-reviewer 修正後" />
+          <img src="../image/上級Skill動作2のコピー.png" alt="上級：/blog-designer スキル実行画面（2/2）" loading="lazy" />
         </div>
-      </div>
-      <div class="tag-list">
-        <span class="tag">/code-reviewer</span>
-        <span class="tag">SubAgent</span>
-        <span class="tag">セキュリティ</span>
-        <span class="tag">自動修正</span>
-      </div>
-    </div>
+        <div class="tag-list" aria-label="使用技術">
+          <span class="tag">/blog-designer</span>
+          <span class="tag">テンプレート活用</span>
+          <span class="tag">文字数検証</span>
+        </div>
+      </article>
 
+      <!-- 上級② コードレビュー wide -->
+      <article class="card wide">
+        <span class="card-level level-advanced">上級</span>
+        <h3 class="card-title">セキュリティレビュースキル /code-reviewer</h3>
+        <p class="card-desc">SubAgent を用いた自動コードレビュースキルを開発。SQL インジェクションや MD5 ハッシュ等の脆弱性を検出し、7件の修正を自動適用。</p>
+        <div class="two-col-grid">
+          <div class="code-window">
+            <div class="code-window-dots" aria-hidden="true">
+              <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+            </div>
+            <img src="../image/code-reviewerのコピー.png" alt="上級：/code-reviewer 実行画面 — 脆弱性検出前" loading="lazy" />
+          </div>
+          <div class="code-window">
+            <div class="code-window-dots" aria-hidden="true">
+              <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+            </div>
+            <img src="../image/code-reviewer修正後のコピー.png" alt="上級：/code-reviewer 実行画面 — 7件修正後" loading="lazy" />
+          </div>
+        </div>
+        <div class="tag-list" aria-label="使用技術">
+          <span class="tag">/code-reviewer</span>
+          <span class="tag">SubAgent</span>
+          <span class="tag">セキュリティ</span>
+          <span class="tag">自動修正</span>
+        </div>
+      </article>
+
+    </div>
   </div>
 </section>
 
 <!-- SKILLS -->
-<div class="skills-bg">
+<!-- [FIX 🟡] div.skills-bg → section に変更、aria-labelledby 追加 -->
+<section id="skills" class="skills-bg" aria-labelledby="skills-title">
   <div class="skills-inner">
     <div class="section-header">
       <p class="section-label">Skills</p>
-      <h2 class="section-title">使用技術・ツール</h2>
-      <div class="section-divider"></div>
+      <h2 class="section-title" id="skills-title">使用技術・ツール</h2>
+      <div class="section-divider" aria-hidden="true"></div>
     </div>
     <div class="skills-grid">
       <div class="skill-item">
-        <div class="skill-icon">✳</div>
+        <!-- [FIX 🟡] 絵文字アイコンに aria-hidden -->
+        <div class="skill-icon" aria-hidden="true">✳</div>
         <div>
           <div class="skill-name">Claude Code</div>
           <div class="skill-sub">CLI / エージェント開発</div>
         </div>
       </div>
       <div class="skill-item">
-        <div class="skill-icon">⚡</div>
+        <div class="skill-icon" aria-hidden="true">⚡</div>
         <div>
           <div class="skill-name">カスタムスキル</div>
           <div class="skill-sub">SKILL.md 設計・実装</div>
         </div>
       </div>
       <div class="skill-item">
-        <div class="skill-icon">🔍</div>
+        <div class="skill-icon" aria-hidden="true">🔍</div>
         <div>
           <div class="skill-name">SubAgent</div>
           <div class="skill-sub">マルチエージェント構成</div>
         </div>
       </div>
       <div class="skill-item">
-        <div class="skill-icon">🛡</div>
+        <div class="skill-icon" aria-hidden="true">🛡</div>
         <div>
           <div class="skill-name">セキュリティレビュー</div>
           <div class="skill-sub">脆弱性検出・自動修正</div>
         </div>
       </div>
       <div class="skill-item">
-        <div class="skill-icon">🐍</div>
+        <div class="skill-icon" aria-hidden="true">🐍</div>
         <div>
           <div class="skill-name">Python</div>
           <div class="skill-sub">スクリプト・自動化</div>
         </div>
       </div>
       <div class="skill-item">
-        <div class="skill-icon">📝</div>
+        <div class="skill-icon" aria-hidden="true">📝</div>
         <div>
           <div class="skill-name">Markdown</div>
           <div class="skill-sub">ドキュメント設計</div>
@@ -478,19 +532,23 @@
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- CONTACT -->
-<section id="contact">
-  <div class="contact-box">
-    <h2>お問い合わせ</h2>
-    <p>AI 開発・Claude Code スキル構築に関するご相談はお気軽にどうぞ。</p>
-    <a href="mailto:alphardrenjyar@gmail.com" class="btn-primary">メールを送る</a>
+<section id="contact" aria-labelledby="contact-title">
+  <div class="section-inner">
+    <div class="contact-box">
+      <h2 id="contact-title">お問い合わせ</h2>
+      <p>AI 開発・Claude Code スキル構築に関するご相談はお気軽にどうぞ。</p>
+      <a href="mailto:alphardrenjyar@gmail.com" class="btn-primary">メールを送る</a>
+    </div>
   </div>
 </section>
 
+</main>
+
 <footer>
-  <p>© 2026 Claude Code Portfolio &nbsp;—&nbsp; Made with <span>✳</span> Claude Code</p>
+  <p>© 2026 Claude Code Portfolio &nbsp;—&nbsp; Made with <span aria-hidden="true">✳</span> Claude Code</p>
 </footer>
 
 </body>
