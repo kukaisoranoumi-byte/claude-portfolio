@@ -9,6 +9,8 @@
   <meta property="og:description" content="Claude Code を活用したAI開発ポートフォリオ" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://kukaisoranoumi-byte.github.io/claude-portfolio/" />
+  <!-- [REVIEW FIX] og:image を追加 — SNSシェア時のサムネイル -->
+  <meta property="og:image" content="https://kukaisoranoumi-byte.github.io/claude-portfolio/image/hero.png" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -53,11 +55,15 @@
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-dark);
     }
+    /* [REVIEW FIX] ロゴを <a> タグにしてトップへ戻れるようにした */
     .nav-logo {
       font-size: 20px;
       color: var(--text-dark-primary);
       letter-spacing: -0.01em;
+      text-decoration: none;
+      transition: opacity 0.15s;
     }
+    .nav-logo:hover { opacity: 0.7; }
     .nav-links {
       display: flex; gap: 28px; list-style: none;
     }
@@ -65,8 +71,12 @@
       font-size: 12px; color: var(--text-dark-secondary);
       text-decoration: none;
       transition: color 0.15s;
+      /* [REVIEW FIX] キーボードフォーカス可視性を追加 */
+      border-radius: 3px;
+      outline-offset: 3px;
     }
     .nav-links a:hover { color: var(--text-dark-primary); }
+    .nav-links a:focus-visible { outline: 2px solid var(--blue-bright); }
 
     /* ── SCROLL REVEAL ── */
     .reveal {
@@ -78,14 +88,13 @@
       opacity: 1;
       transform: translateY(0);
     }
-    /* Hero内のrevealは常に表示 */
     .hero .reveal {
       opacity: 1;
       transform: none;
       transition: none;
     }
 
-    /* ── HERO (background image) ── */
+    /* ── HERO ── */
     .hero {
       position: relative;
       min-height: 100vh;
@@ -109,9 +118,6 @@
       position: relative;
       z-index: 1;
     }
-    .hero-section {
-      width: 100%;
-    }
     .eyebrow {
       font-size: 14px; font-weight: 600;
       color: var(--blue-bright);
@@ -126,8 +132,8 @@
       color: var(--text-dark-primary);
       margin-bottom: 20px;
     }
-    .hero-title em {
-      font-style: normal;
+    /* [REVIEW FIX] <em> → <span> に変更（グラデーションは意味論ではなくスタイル） */
+    .hero-title .gradient-text {
       background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -165,12 +171,12 @@
       border-radius: 980px;
       font-size: 17px; font-weight: 400;
       text-decoration: none;
-
       transition: background 0.2s var(--ease);
     }
     .btn-ghost:hover { background: rgba(255,255,255,0.08); }
 
     /* ── SECTION BASE ── */
+    /* [REVIEW FIX] <section> に統一するためクラス名を維持しつつ要素は HTML 側で変更 */
     .section-dark  { background: var(--near-black); padding: 100px 0; }
     .section-light { background: var(--light-gray); padding: 100px 0; }
     .section-black { background: var(--black);      padding: 100px 0; }
@@ -281,6 +287,7 @@
       background: rgba(0,0,0,0.04);
       border-bottom: 1px solid rgba(0,0,0,0.08);
     }
+    /* [REVIEW FIX] aria-hidden は HTML 側で付与済み */
     .window-chrome span {
       width: 10px; height: 10px; border-radius: 50%;
     }
@@ -305,21 +312,15 @@
       color: var(--text-light-secondary);
     }
 
-    /* ── CTA LINK ── */
-    .cta-link {
-      font-size: 17px; color: var(--blue-bright);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .cta-link:hover { color: #5ac8fa; }
-    .section-light .cta-link { color: var(--blue); }
-    .section-light .cta-link:hover { color: #0077ed; }
-
     /* ── SKILLS GRID ── */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2px;
+      /* [REVIEW FIX] .inner ラッパー追加に伴いグリッド自体はフル幅のまま */
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 40px;
     }
     .skill-card {
       background: #141414;
@@ -327,6 +328,7 @@
       transition: background 0.3s var(--ease);
     }
     .skill-card:hover { background: #1c1c1c; }
+    /* [REVIEW FIX] aria-hidden はHTML側で付与済み。ここは表示スタイルのみ */
     .skill-icon {
       font-size: 28px; margin-bottom: 16px; display: block;
     }
@@ -342,13 +344,15 @@
       line-height: 1.5;
     }
 
-    /* ── CONTACT (BLACK) ── */
+    /* ── CONTACT ── */
+    /* [REVIEW FIX] インラインスタイルを廃止してクラスへ移動 */
     .contact-inner {
       text-align: center;
       padding: 120px 40px;
     }
-    .contact-inner .section-title { margin-bottom: 16px; }
-    .contact-inner .section-desc  { margin: 0 auto 40px; }
+    .contact-inner .section-eyebrow { text-align: center; }
+    .contact-inner .section-title   { text-align: center; margin-bottom: 16px; }
+    .contact-inner .section-desc    { text-align: center; margin: 0 auto 40px; }
 
     /* ── FOOTER ── */
     footer {
@@ -375,6 +379,7 @@
       }
       .skills-grid {
         grid-template-columns: 1fr;
+        padding: 0 24px;
       }
       .hero {
         padding: 120px 24px 80px;
@@ -397,9 +402,10 @@
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="main-nav">
-  <div class="nav-logo">✳</div>
+<!-- [REVIEW FIX] aria-label を追加してスクリーンリーダー対応 -->
+<nav id="main-nav" aria-label="メインナビゲーション">
+  <!-- [REVIEW FIX] ロゴを <a> にしてトップへ戻れるように -->
+  <a href="#hero" class="nav-logo" aria-label="トップへ戻る">✳</a>
   <ul class="nav-links">
     <li><a href="#works">実績</a></li>
     <li><a href="#skills">スキル</a></li>
@@ -407,12 +413,16 @@
   </ul>
 </nav>
 
-<!-- HERO (background image) -->
-<section class="hero" id="hero">
-  <div class="hero-overlay"></div>
+<!-- [REVIEW FIX] <main> ランドマークを追加 -->
+<main>
+
+<!-- HERO -->
+<section class="hero" id="hero" aria-label="ヒーロー">
+  <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-content">
     <p class="eyebrow">Claude Code × AI 開発</p>
-    <h1 class="hero-title">AI と共に<br><em>作り上げた</em></h1>
+    <!-- [REVIEW FIX] <em> → <span class="gradient-text"> に変更（装飾目的のため） -->
+    <h1 class="hero-title">AI と共に<br><span class="gradient-text">作り上げた</span></h1>
     <p class="hero-sub">Claude Code を使ったスキル開発・自動化・<br>コードレビューの成果をまとめたポートフォリオです。</p>
     <div class="hero-cta">
       <a href="#works" class="btn-primary">実績を見る</a>
@@ -421,198 +431,201 @@
   </div>
 </section>
 
-<!-- WORKS (BLACK GRID) -->
-<div id="works" class="section-black">
+<!-- WORKS -->
+<!-- [REVIEW FIX] <div> → <section> に変更（セマンティック統一） -->
+<section id="works" class="section-black" aria-labelledby="works-title">
   <div class="inner">
     <p class="section-eyebrow reveal">Works</p>
-    <h2 class="section-title reveal">開発実績</h2>
+    <h2 class="section-title reveal" id="works-title">開発実績</h2>
     <p class="section-desc reveal">初級から上級まで、Claude Code を活用して構築したスキルと自動化の記録。</p>
   </div>
 
   <div class="works-grid">
 
     <!-- 初級 -->
-    <div class="work-card reveal">
+    <article class="work-card reveal">
       <p class="work-level level-beginner">初級</p>
       <h3 class="work-title">文字数カウント<br>スキルの活用</h3>
       <p class="work-desc">/char-count スキルを使い、スペース・改行の有無で4パターンの文字数を自動集計。</p>
       <div class="work-screenshot">
-        <div class="window-chrome">
+        <!-- [REVIEW FIX] 装飾ドットに aria-hidden を付与 -->
+        <div class="window-chrome" aria-hidden="true">
           <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
         </div>
-        <img src="image/初級のコピー.png" alt="初級 - 文字数カウント" />
+        <img src="image/初級のコピー.png" alt="初級スキル：/char-count の実行結果画面" />
       </div>
-      <div class="work-tags">
+      <div class="work-tags" aria-label="使用技術">
         <span class="work-tag">/char-count</span>
         <span class="work-tag">Skill実行</span>
         <span class="work-tag">Python</span>
       </div>
-    </div>
+    </article>
 
     <!-- 中級① -->
-    <div class="work-card reveal">
+    <article class="work-card reveal">
       <p class="work-level level-mid">中級</p>
       <h3 class="work-title">セッション管理と<br>自己紹介ファイル作成</h3>
       <p class="work-desc">Claude Code のセッションを整理し、README.md として自己紹介ファイルを自動生成。</p>
       <div class="work-screenshot">
-        <div class="window-chrome">
+        <div class="window-chrome" aria-hidden="true">
           <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
         </div>
-        <img src="image/ステップ5_セッション並替のコピー.png" alt="中級 - セッション管理" />
+        <img src="image/ステップ5_セッション並替のコピー.png" alt="中級：セッション並び替えとREADME自動生成の画面" />
       </div>
-      <div class="work-tags">
+      <div class="work-tags" aria-label="使用技術">
         <span class="work-tag">セッション管理</span>
         <span class="work-tag">README 生成</span>
       </div>
-    </div>
+    </article>
 
     <!-- 中級② wide -->
-    <div class="work-card wide reveal">
+    <article class="work-card wide reveal">
       <p class="work-level level-mid">中級</p>
       <h3 class="work-title">カスタムスキル「mojisuu」の作成・リネーム</h3>
       <p class="work-desc">char-count スキルをゼロから作成し、mojisuu にリネーム。フォルダ名と SKILL.md を同時更新してスキルリストに即反映。</p>
       <div class="work-screenshot-row">
         <div class="work-screenshot">
-          <div class="window-chrome">
+          <div class="window-chrome" aria-hidden="true">
             <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
           </div>
-          <img src="image/中級Claude Code画面のコピー.png" alt="中級 - Claude Code画面" />
+          <img src="image/中級Claude Code画面のコピー.png" alt="中級：Claude Code でのスキル作成画面" />
         </div>
         <div class="work-screenshot">
-          <div class="window-chrome">
+          <div class="window-chrome" aria-hidden="true">
             <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
           </div>
-          <img src="image/中級フォルダ内のコピー.png" alt="中級 - フォルダ構成" />
+          <img src="image/中級フォルダ内のコピー.png" alt="中級：mojisuu スキルのフォルダ構成" />
         </div>
       </div>
-      <div class="work-tags">
+      <div class="work-tags" aria-label="使用技術">
         <span class="work-tag">カスタムスキル</span>
         <span class="work-tag">mojisuu</span>
         <span class="work-tag">SKILL.md</span>
       </div>
-    </div>
+    </article>
 
     <!-- 上級① blog-designer -->
-    <div class="work-card light-card reveal">
+    <article class="work-card light-card reveal">
       <p class="work-level level-advanced">上級</p>
       <h3 class="work-title">ブログ構成生成スキル<br>/blog-designer</h3>
       <p class="work-desc">テンプレートを読み込み、指定テーマでブログ記事を自動生成。文字数カウントまで一気通貫で処理。</p>
       <div class="work-screenshot" style="margin-bottom:12px;">
-        <div class="window-chrome">
+        <div class="window-chrome" aria-hidden="true">
           <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
         </div>
-        <img src="image/上級Skill動作1のコピー.png" alt="上級 - blog-designer 1" />
+        <img src="image/上級Skill動作1のコピー.png" alt="上級：/blog-designer スキル実行画面（1/2）" />
       </div>
       <div class="work-screenshot">
-        <div class="window-chrome">
+        <div class="window-chrome" aria-hidden="true">
           <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
         </div>
-        <img src="image/上級Skill動作2のコピー.png" alt="上級 - blog-designer 2" />
+        <img src="image/上級Skill動作2のコピー.png" alt="上級：/blog-designer スキル実行画面（2/2）" />
       </div>
-      <div class="work-tags">
+      <div class="work-tags" aria-label="使用技術">
         <span class="work-tag">/blog-designer</span>
         <span class="work-tag">テンプレート活用</span>
         <span class="work-tag">文字数検証</span>
       </div>
-    </div>
+    </article>
 
     <!-- 上級② code-reviewer -->
-    <div class="work-card light-card reveal">
+    <article class="work-card light-card reveal">
       <p class="work-level level-advanced">上級</p>
       <h3 class="work-title">セキュリティレビュー<br>スキル /code-reviewer</h3>
       <p class="work-desc">SubAgent を用いた自動コードレビュースキルを開発。SQL インジェクション・MD5 脆弱性を検出し、7件の修正を自動適用。</p>
       <div class="work-screenshot" style="margin-bottom:12px;">
-        <div class="window-chrome">
+        <div class="window-chrome" aria-hidden="true">
           <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
         </div>
-        <img src="image/code-reviewerのコピー.png" alt="上級 - code-reviewer" />
+        <img src="image/code-reviewerのコピー.png" alt="上級：/code-reviewer 実行画面 — 脆弱性検出前" />
       </div>
       <div class="work-screenshot">
-        <div class="window-chrome">
+        <div class="window-chrome" aria-hidden="true">
           <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
         </div>
-        <img src="image/code-reviewer修正後のコピー.png" alt="上級 - 修正後" />
+        <img src="image/code-reviewer修正後のコピー.png" alt="上級：/code-reviewer 実行画面 — 7件修正後" />
       </div>
-      <div class="work-tags">
+      <div class="work-tags" aria-label="使用技術">
         <span class="work-tag">/code-reviewer</span>
         <span class="work-tag">SubAgent</span>
         <span class="work-tag">セキュリティ</span>
         <span class="work-tag">自動修正</span>
       </div>
-    </div>
+    </article>
 
   </div>
-</div>
+</section>
 
-<!-- SKILLS (DARK) -->
-<div id="skills" class="section-dark">
+<!-- SKILLS -->
+<section id="skills" class="section-dark" aria-labelledby="skills-title">
+  <!-- [REVIEW FIX] section-eyebrow と title は .inner 内に統一 -->
   <div class="inner">
     <p class="section-eyebrow reveal">Skills</p>
-    <h2 class="section-title reveal">使用技術・ツール</h2>
+    <h2 class="section-title reveal" id="skills-title">使用技術・ツール</h2>
     <p class="section-desc reveal">Claude Code を中心に、スキル設計からセキュリティ自動化まで。</p>
   </div>
+  <!-- [REVIEW FIX] .skills-grid に max-width / padding を持たせて .inner 相当に揃えた -->
   <div class="skills-grid">
     <div class="skill-card reveal">
-      <span class="skill-icon">✳</span>
+      <!-- [REVIEW FIX] 絵文字アイコンに aria-hidden を付与 -->
+      <span class="skill-icon" aria-hidden="true">✳</span>
       <div class="skill-name">Claude Code</div>
       <div class="skill-sub">CLI / エージェント開発</div>
     </div>
     <div class="skill-card reveal">
-      <span class="skill-icon">⚡</span>
+      <span class="skill-icon" aria-hidden="true">⚡</span>
       <div class="skill-name">カスタムスキル</div>
       <div class="skill-sub">SKILL.md 設計・実装</div>
     </div>
     <div class="skill-card reveal">
-      <span class="skill-icon">🔍</span>
+      <span class="skill-icon" aria-hidden="true">🔍</span>
       <div class="skill-name">SubAgent</div>
       <div class="skill-sub">マルチエージェント構成</div>
     </div>
     <div class="skill-card reveal">
-      <span class="skill-icon">🛡</span>
+      <span class="skill-icon" aria-hidden="true">🛡</span>
       <div class="skill-name">セキュリティレビュー</div>
       <div class="skill-sub">脆弱性検出・自動修正</div>
     </div>
     <div class="skill-card reveal">
-      <span class="skill-icon">🐍</span>
+      <span class="skill-icon" aria-hidden="true">🐍</span>
       <div class="skill-name">Python</div>
       <div class="skill-sub">スクリプト・自動化</div>
     </div>
     <div class="skill-card reveal">
-      <span class="skill-icon">📝</span>
+      <span class="skill-icon" aria-hidden="true">📝</span>
       <div class="skill-name">Markdown</div>
       <div class="skill-sub">ドキュメント設計</div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- CONTACT (BLACK) -->
-<div id="contact" class="section-black">
+<!-- CONTACT -->
+<section id="contact" class="section-black" aria-labelledby="contact-title">
   <div class="contact-inner">
-    <p class="section-eyebrow reveal" style="text-align:center;">Contact</p>
-    <h2 class="section-title reveal" style="text-align:center;">お問い合わせ</h2>
-    <p class="section-desc reveal" style="text-align:center;">AI 開発・Claude Code スキル構築に関するご相談はお気軽にどうぞ。</p>
+    <!-- [REVIEW FIX] インラインスタイルを廃止。CSS の .contact-inner ルールで制御 -->
+    <p class="section-eyebrow reveal">Contact</p>
+    <h2 class="section-title reveal" id="contact-title">お問い合わせ</h2>
+    <p class="section-desc reveal">AI 開発・Claude Code スキル構築に関するご相談はお気軽にどうぞ。</p>
     <div class="reveal">
       <a href="mailto:alphardrenjyar@gmail.com" class="btn-primary">メールを送る</a>
     </div>
   </div>
-</div>
+</section>
+
+</main>
 
 <footer>
-  <p>© 2026 &nbsp;<span>✳</span>&nbsp; Claude Code Portfolio &nbsp;—&nbsp; Made with Claude Code</p>
+  <p>© 2026 &nbsp;<span aria-hidden="true">✳</span>&nbsp; Claude Code Portfolio &nbsp;—&nbsp; Made with Claude Code</p>
 </footer>
 
 <script>
-  // ── NAV: スクロール連動でblur背景を付与 ──
   const nav = document.getElementById('main-nav');
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 10) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
+    nav.classList.toggle('scrolled', window.scrollY > 10);
   }, { passive: true });
 
-  // ── SCROLL REVEAL: ヒーロー外の .reveal 要素のみ対象 ──
+  // Hero 内の .reveal は除外してスクロールリビールを適用
   const revealEls = document.querySelectorAll('.reveal:not(.hero .reveal)');
 
   const observer = new IntersectionObserver((entries) => {
