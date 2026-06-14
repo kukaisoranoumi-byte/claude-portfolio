@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code Portfolio</title>
+  <meta name="description" content="Claude Code を活用したAI開発のポートフォリオ。カスタムスキル、SubAgent、セキュリティレビュー自動化など初級から上級までの実績をまとめています。" />
+  <meta property="og:title" content="Claude Code Portfolio" />
+  <meta property="og:description" content="Claude Code を活用したAI開発ポートフォリオ" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kukaisoranoumi-byte.github.io/claude-portfolio/v3/" />
+  <meta property="og:image" content="https://kukaisoranoumi-byte.github.io/claude-portfolio/image/hero.png" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue:        #0071e3;
+      --blue-bright: #2997ff;
+      --black:       #000000;
+      --near-black:  #1d1d1f;
+      --light-gray:  #f5f5f7;
+      --white:       #ffffff;
+      --text-dark-primary:   #f5f5f7;
+      --text-dark-secondary: #a1a1a6;
+      --text-light-primary:  #1d1d1f;
+      --text-light-secondary:#6e6e73;
+      --border-dark:  rgba(255,255,255,0.12);
+      --border-light: rgba(0,0,0,0.08);
+      --font: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--text-dark-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 44px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      background: transparent;
+      transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+    }
+    nav.scrolled {
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .nav-logo {
+      font-size: 20px;
+      color: var(--text-dark-primary);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .nav-logo:hover { opacity: 0.7; }
+    .nav-links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px; color: var(--text-dark-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+      border-radius: 3px;
+      outline-offset: 3px;
+    }
+    .nav-links a:hover { color: var(--text-dark-primary); }
+    .nav-links a:focus-visible { outline: 2px solid var(--blue-bright); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      background-image: url('../image/hero.png');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 160px 40px 100px;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .eyebrow {
+      font-size: 14px; font-weight: 600;
+      color: var(--blue-bright);
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-size: clamp(40px, 7vw, 96px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--text-dark-primary);
+      margin-bottom: 20px;
+    }
+    /* グラデーションは装飾目的のため <span> で適用（<em> の意味論的誤用を避ける） */
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 19px; font-weight: 400;
+      color: var(--text-dark-secondary);
+      line-height: 1.6; max-width: 520px;
+      margin: 0 auto 40px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 8px 20px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 980px;
+      font-size: 17px; font-weight: 400;
+      text-decoration: none;
+      transition: background 0.2s var(--ease);
+    }
+    .btn-primary:hover { background: #0077ed; }
+    .btn-ghost {
+      display: inline-block;
+      padding: 8px 20px;
+      background: transparent;
+      color: var(--text-dark-primary);
+      border: 1px solid rgba(255,255,255,0.56);
+      border-radius: 980px;
+      font-size: 17px; font-weight: 400;
+      text-decoration: none;
+      transition: background 0.2s var(--ease);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+    /* ── SECTION BASE ── */
+    .section-dark  { background: var(--near-black); padding: 100px 0; }
+    .section-light { background: var(--light-gray); padding: 100px 0; }
+    .section-black { background: var(--black);      padding: 100px 0; }
+
+    .inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .section-eyebrow {
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+    .section-dark  .section-eyebrow { color: var(--blue-bright); }
+    .section-light .section-eyebrow { color: var(--blue); }
+    .section-black .section-eyebrow { color: var(--blue-bright); }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .section-dark  .section-title,
+    .section-black .section-title { color: var(--text-dark-primary); }
+    .section-light .section-title  { color: var(--text-light-primary); }
+
+    .section-desc {
+      font-size: 17px; line-height: 1.6;
+      max-width: 600px; margin-bottom: 64px;
+    }
+    .section-dark  .section-desc,
+    .section-black .section-desc { color: var(--text-dark-secondary); }
+    .section-light .section-desc  { color: var(--text-light-secondary); }
+
+    /* ── WORKS GRID ── */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+    .work-card {
+      position: relative;
+      background: #141414;
+      overflow: hidden;
+      padding: 48px 40px 40px;
+      min-height: 480px;
+      display: flex; flex-direction: column;
+      transition: background 0.3s var(--ease);
+    }
+    .work-card:hover { background: #1e1e1e; }
+    .work-card.wide { grid-column: span 2; }
+    .work-card.light-card {
+      background: var(--white);
+    }
+    .work-card.light-card:hover { background: #f9f9f9; }
+
+    .work-level {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .level-beginner { color: #30d158; }
+    .level-mid      { color: #bf5af2; }
+    .level-advanced { color: var(--blue-bright); }
+
+    .work-title {
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .work-card:not(.light-card) .work-title { color: var(--text-dark-primary); }
+    .work-card.light-card .work-title       { color: var(--text-light-primary); }
+
+    .work-desc {
+      font-size: 15px; line-height: 1.6;
+      margin-bottom: 24px; flex-grow: 1;
+    }
+    .work-card:not(.light-card) .work-desc { color: var(--text-dark-secondary); }
+    .work-card.light-card .work-desc       { color: var(--text-light-secondary); }
+
+    .work-screenshot {
+      width: 100%; border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .work-card.light-card .work-screenshot {
+      border-color: rgba(0,0,0,0.08);
+    }
+    /* スクリーンショット間のスペーサー（2枚並べる上級カード用） */
+    .work-screenshot.mb-12 { margin-bottom: 12px; }
+    .work-screenshot-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .work-screenshot img { width: 100%; display: block; }
+
+    /* macOS window chrome（装飾目的 — aria-hidden="true" で読み上げ除外済み） */
+    .window-chrome {
+      display: flex; gap: 6px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .work-card.light-card .window-chrome {
+      background: rgba(0,0,0,0.04);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .window-chrome span {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28c840; }
+
+    .work-tags {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+    }
+    .work-tag {
+      font-size: 12px; font-weight: 500;
+      padding: 3px 12px;
+      border-radius: 980px;
+    }
+    .work-card:not(.light-card) .work-tag {
+      background: rgba(255,255,255,0.08);
+      color: var(--text-dark-secondary);
+    }
+    .work-card.light-card .work-tag {
+      background: rgba(0,0,0,0.06);
+      color: var(--text-light-secondary);
+    }
+
+    /* ── SKILLS GRID ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .skill-card {
+      background: #141414;
+      padding: 40px;
+      transition: background 0.3s var(--ease);
+    }
+    .skill-card:hover { background: #1c1c1c; }
+    .skill-icon {
+      font-size: 28px; margin-bottom: 16px; display: block;
+    }
+    .skill-name {
+      font-size: 19px; font-weight: 600;
+      color: var(--text-dark-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .skill-sub {
+      font-size: 14px;
+      color: var(--text-dark-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      text-align: center;
+      padding: 120px 40px;
+    }
+    .contact-inner .section-eyebrow { text-align: center; }
+    .contact-inner .section-title   { text-align: center; margin-bottom: 16px; }
+    .contact-inner .section-desc    { text-align: center; margin: 0 auto 40px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--near-black);
+      border-top: 1px solid var(--border-dark);
+      padding: 20px 40px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-dark-secondary);
+      letter-spacing: 0.01em;
+    }
+    footer span { color: var(--blue-bright); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .works-grid {
+        grid-template-columns: 1fr;
+      }
+      .work-card.wide {
+        grid-column: span 1;
+      }
+      .work-screenshot-row {
+        grid-template-columns: 1fr;
+      }
+      .skills-grid {
+        grid-template-columns: 1fr;
+        padding: 0 24px;
+      }
+      .hero {
+        padding: 120px 24px 80px;
+      }
+      .inner {
+        padding: 0 24px;
+      }
+      .work-card {
+        padding: 36px 24px 32px;
+        min-height: auto;
+      }
+      .nav-links {
+        gap: 16px;
+      }
+      .contact-inner {
+        padding: 80px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav" aria-label="メインナビゲーション">
+  <a href="#hero" class="nav-logo" aria-label="トップへ戻る">✳</a>
+  <ul class="nav-links">
+    <li><a href="#works">実績</a></li>
+    <li><a href="#skills">スキル</a></li>
+    <li><a href="#contact">連絡先</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="hero" aria-label="ヒーロー">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="eyebrow">Claude Code × AI 開発</p>
+    <h1 class="hero-title">AI と共に<br><span class="gradient-text">作り上げた</span></h1>
+    <p class="hero-sub">Claude Code を使ったスキル開発・自動化・<br>コードレビューの成果をまとめたポートフォリオです。</p>
+    <div class="hero-cta">
+      <a href="#works" class="btn-primary">実績を見る</a>
+      <a href="#contact" class="btn-ghost">連絡する</a>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works" class="section-black" aria-labelledby="works-title">
+  <div class="inner">
+    <p class="section-eyebrow reveal">Works</p>
+    <h2 class="section-title reveal" id="works-title">開発実績</h2>
+    <p class="section-desc reveal">初級から上級まで、Claude Code を活用して構築したスキルと自動化の記録。</p>
+  </div>
+
+  <div class="works-grid">
+
+    <!-- 初級 -->
+    <article class="work-card reveal">
+      <p class="work-level level-beginner">初級</p>
+      <h3 class="work-title">文字数カウント<br>スキルの活用</h3>
+      <p class="work-desc">/char-count スキルを使い、スペース・改行の有無で4パターンの文字数を自動集計。</p>
+      <div class="work-screenshot">
+        <div class="window-chrome" aria-hidden="true">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/初級のコピー.png" alt="初級スキル：/char-count の実行結果画面" loading="lazy" />
+      </div>
+      <div class="work-tags" aria-label="使用技術">
+        <span class="work-tag">/char-count</span>
+        <span class="work-tag">Skill実行</span>
+        <span class="work-tag">Python</span>
+      </div>
+    </article>
+
+    <!-- 中級① -->
+    <article class="work-card reveal">
+      <p class="work-level level-mid">中級</p>
+      <h3 class="work-title">セッション管理と<br>自己紹介ファイル作成</h3>
+      <p class="work-desc">Claude Code のセッションを整理し、README.md として自己紹介ファイルを自動生成。</p>
+      <div class="work-screenshot">
+        <div class="window-chrome" aria-hidden="true">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/ステップ5_セッション並替のコピー.png" alt="中級：セッション並び替えとREADME自動生成の画面" loading="lazy" />
+      </div>
+      <div class="work-tags" aria-label="使用技術">
+        <span class="work-tag">セッション管理</span>
+        <span class="work-tag">README 生成</span>
+      </div>
+    </article>
+
+    <!-- 中級② wide -->
+    <article class="work-card wide reveal">
+      <p class="work-level level-mid">中級</p>
+      <h3 class="work-title">カスタムスキル「mojisuu」の作成・リネーム</h3>
+      <p class="work-desc">char-count スキルをゼロから作成し、mojisuu にリネーム。フォルダ名と SKILL.md を同時更新してスキルリストに即反映。</p>
+      <div class="work-screenshot-row">
+        <div class="work-screenshot">
+          <div class="window-chrome" aria-hidden="true">
+            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <img src="../image/中級Claude Code画面のコピー.png" alt="中級：Claude Code でのスキル作成画面" loading="lazy" />
+        </div>
+        <div class="work-screenshot">
+          <div class="window-chrome" aria-hidden="true">
+            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+          </div>
+          <img src="../image/中級フォルダ内のコピー.png" alt="中級：mojisuu スキルのフォルダ構成" loading="lazy" />
+        </div>
+      </div>
+      <div class="work-tags" aria-label="使用技術">
+        <span class="work-tag">カスタムスキル</span>
+        <span class="work-tag">mojisuu</span>
+        <span class="work-tag">SKILL.md</span>
+      </div>
+    </article>
+
+    <!-- 上級① blog-designer -->
+    <article class="work-card light-card reveal">
+      <p class="work-level level-advanced">上級</p>
+      <h3 class="work-title">ブログ構成生成スキル<br>/blog-designer</h3>
+      <p class="work-desc">テンプレートを読み込み、指定テーマでブログ記事を自動生成。文字数カウントまで一気通貫で処理。</p>
+      <div class="work-screenshot mb-12">
+        <div class="window-chrome" aria-hidden="true">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/上級Skill動作1のコピー.png" alt="上級：/blog-designer スキル実行画面（1/2）" loading="lazy" />
+      </div>
+      <div class="work-screenshot">
+        <div class="window-chrome" aria-hidden="true">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/上級Skill動作2のコピー.png" alt="上級：/blog-designer スキル実行画面（2/2）" loading="lazy" />
+      </div>
+      <div class="work-tags" aria-label="使用技術">
+        <span class="work-tag">/blog-designer</span>
+        <span class="work-tag">テンプレート活用</span>
+        <span class="work-tag">文字数検証</span>
+      </div>
+    </article>
+
+    <!-- 上級② code-reviewer -->
+    <article class="work-card light-card reveal">
+      <p class="work-level level-advanced">上級</p>
+      <h3 class="work-title">セキュリティレビュー<br>スキル /code-reviewer</h3>
+      <p class="work-desc">SubAgent を用いた自動コードレビュースキルを開発。SQL インジェクション・MD5 脆弱性を検出し、7件の修正を自動適用。</p>
+      <div class="work-screenshot mb-12">
+        <div class="window-chrome" aria-hidden="true">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/code-reviewerのコピー.png" alt="上級：/code-reviewer 実行画面 — 脆弱性検出前" loading="lazy" />
+      </div>
+      <div class="work-screenshot">
+        <div class="window-chrome" aria-hidden="true">
+          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+        </div>
+        <img src="../image/code-reviewer修正後のコピー.png" alt="上級：/code-reviewer 実行画面 — 7件修正後" loading="lazy" />
+      </div>
+      <div class="work-tags" aria-label="使用技術">
+        <span class="work-tag">/code-reviewer</span>
+        <span class="work-tag">SubAgent</span>
+        <span class="work-tag">セキュリティ</span>
+        <span class="work-tag">自動修正</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section-dark" aria-labelledby="skills-title">
+  <div class="inner">
+    <p class="section-eyebrow reveal">Skills</p>
+    <h2 class="section-title reveal" id="skills-title">使用技術・ツール</h2>
+    <p class="section-desc reveal">Claude Code を中心に、スキル設計からセキュリティ自動化まで。</p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <span class="skill-icon" aria-hidden="true">✳</span>
+      <div class="skill-name">Claude Code</div>
+      <div class="skill-sub">CLI / エージェント開発</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon" aria-hidden="true">⚡</span>
+      <div class="skill-name">カスタムスキル</div>
+      <div class="skill-sub">SKILL.md 設計・実装</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon" aria-hidden="true">🔍</span>
+      <div class="skill-name">SubAgent</div>
+      <div class="skill-sub">マルチエージェント構成</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon" aria-hidden="true">🛡</span>
+      <div class="skill-name">セキュリティレビュー</div>
+      <div class="skill-sub">脆弱性検出・自動修正</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon" aria-hidden="true">🐍</span>
+      <div class="skill-name">Python</div>
+      <div class="skill-sub">スクリプト・自動化</div>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon" aria-hidden="true">📝</span>
+      <div class="skill-name">Markdown</div>
+      <div class="skill-sub">ドキュメント設計</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-black" aria-labelledby="contact-title">
+  <div class="contact-inner">
+    <p class="section-eyebrow reveal">Contact</p>
+    <h2 class="section-title reveal" id="contact-title">お問い合わせ</h2>
+    <p class="section-desc reveal">AI 開発・Claude Code スキル構築に関するご相談はお気軽にどうぞ。</p>
+    <div class="reveal">
+      <a href="mailto:alphardrenjyar@gmail.com" class="btn-primary">メールを送る</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 &nbsp;<span aria-hidden="true">✳</span>&nbsp; Claude Code Portfolio &nbsp;—&nbsp; Made with Claude Code</p>
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  const revealEls = document.querySelectorAll('.reveal:not(.hero .reveal)');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
